@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="{% static 'logins.css' %}">
+<body>
+    <div>
+        <h1>Login</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table>
+                {% if error %}
+                <p>{{error}}</p>
+                {% endif %}
+                <tr>
+                    <td>Username</td>
+                    <td><input type="text" name="username" id="" value="{{form.username|default:''}}"></td>
+                </tr>
+                <tr>
+                    <td>Password</td>
+                    <td><input type="password" name="password" id=""></td>
+                </tr>
+            </table>
+            <button>Login</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,48 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+{% block account %}
+<link rel="stylesheet" href="{% static 'accounts.css' %}">
+    <div class="account-container">
+        <form action="" method="post">
+            {% csrf_token %}
+            <h1>Create Account</h1>
+            <table>
+                <tr>
+                    <td>Account ID</td>
+                    <td><input type="text" name="acc_id" id="" value="{{number}}" readonly></td>
+                </tr>            
+                <tr>
+                    <td>Customer ID</td>
+                    <td><input type="text" name="cust_id" id="" value="{{ form_data.cust_id|default:'' }}">
+                    {% if error %}
+                    <p style="color: red;">{{error}}</p>
+                    {% endif %}
+                    <button name="action" value="check">Check</button></td>
+                </tr>
+                <tr>
+                    <td>Account Holder</td>
+                    <td><input type="text" name="acc_holder" id="" value="{{holder_name}}" readonly></td>
+                </tr>
+                <tr>
+                    <td>Account Number</td>
+                    <td><input type="text" name="acc_no" id="" value="{{acc}}" readonly></td>
+                </tr>
+                <tr>
+                    <td>Account Type</td>
+                    <td><input type="radio" name="acc_type" id="" value="Savings">Savings
+                    <input type="radio" name="acc_type" id="" value="Current">Current
+                    <input type="radio" name="acc_type" id="" value="Fixed Deposit">Fixed Deposit</td>
+                </tr>
+                <tr>
+                    <td>Balance</td>
+                    <td><input type="text" name="balance" id=""></td>
+                </tr>
+                <tr>
+                    <td>Created At</td>
+                    <td><input type="text" name="created_at" id="" value="{{today|date:'Y-m-d'}}" readonly></td>
+                </tr>
+            </table>
+            <button name="action" value="save">Submit</button>
+        </form>
+    </div>
+{% endblock %}

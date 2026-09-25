@@ -1,0 +1,89 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+
+{% block welcome %}
+
+<link rel="stylesheet" href="{% static 'home1.css' %}">
+
+<section class="hero">
+    <div class="hero-content">
+        <h1>Welcome to Our Banking System</h1>
+        <p>
+            Secure, simple and convenient banking at your fingertips.
+        </p>
+        <div class="hero-buttons">
+            <a href="{% url 'register' %}" class="btn primary">New Registration</a>
+            <a href="{% url 'account' %}" class="btn secondary">Create Account</a>
+        </div>
+    </div>
+</section>
+<section class="services">
+    <h2>Our Banking Services</h2>
+    <p class="section-description">
+        Everything you need for convenient and secure banking.
+    </p>
+    <div class="service-container">
+        <div class="service-card">
+            <h3>💰 Savings Account</h3>
+            <p>
+                Manage your savings and keep your money secure.
+            </p>
+        </div>
+        <div class="service-card">
+            <h3>💸 Money Transfer</h3>
+            <p>
+                Transfer money quickly and conveniently.
+            </p>
+        </div>
+        <div class="service-card">
+            <h3>🏦 Loans</h3>
+            <p>
+                Explore our available banking loan services.
+            </p>
+        </div>
+        <div class="service-card">
+            <h3>💳 Cards</h3>
+            <p>
+                Access and manage your banking card services.
+            </p>
+        </div>
+    </div>
+</section>
+<section class="features">
+    <h2>Why Choose Us?</h2>
+    <div class="feature-container">
+        <div class="feature">
+            <h3>🔒 Secure</h3>
+            <p>Your banking information is protected.</p>
+        </div>
+        <div class="feature">
+            <h3>⚡ Fast</h3>
+            <p>Perform banking operations quickly and easily.</p>
+        </div>
+        <div class="feature">
+            <h3>😊 Easy to Use</h3>
+            <p>A simple and user-friendly banking experience.</p>
+        </div>
+    </div>
+</section>
+
+<section class="about">
+    <h2>About Our Banking System</h2>
+    <p>
+        Our Banking System provides a simple and secure platform
+        for managing banking services online. Customers can access
+        their accounts, transfer funds, manage transactions and
+        use various banking services conveniently.
+    </p>
+
+</section>
+<section class="cta">
+    <h2>Start Your Banking Journey Today</h2>
+    <p>
+        Create an account and enjoy simple and secure banking.
+    </p>
+    <a href="#" class="btn primary">Get Started</a>
+
+</section>
+
+{% endblock %}

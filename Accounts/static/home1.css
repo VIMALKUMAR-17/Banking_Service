@@ -1,0 +1,251 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    color: #1e293b;
+}
+
+.hero {
+    min-height: 430px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 20px;
+
+    background: linear-gradient(
+        135deg,
+        #0f4c81,
+        #1565c0,
+        #1976d2
+    );
+
+    color: white;
+}
+
+.hero-content {
+    max-width: 800px;
+}
+
+.hero h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.hero p {
+    font-size: 20px;
+    color: #e3f2fd;
+    margin-bottom: 35px;
+}
+.hero-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    display: inline-block;
+    padding: 13px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.btn.primary {
+    background: white;
+    color: #1565c0;
+}
+
+.btn.primary:hover {
+    background: #e3f2fd;
+    transform: translateY(-2px);
+}
+
+.btn.secondary {
+    background: transparent;
+    color: white;
+    border: 2px solid white;
+}
+
+.btn.secondary:hover {
+    background: white;
+    color: #1565c0;
+    transform: translateY(-2px);
+}
+
+.services {
+    padding: 70px 8%;
+    text-align: center;
+    background: white;
+}
+
+.services h2,
+.features h2,
+.about h2 {
+    font-size: 32px;
+    color: #12395b;
+    margin-bottom: 10px;
+}
+
+.section-description {
+    color: #64748b;
+    margin-bottom: 40px;
+}
+
+.service-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    max-width: 1200px;
+    margin: auto;
+}
+
+.service-card {
+    background: #f8fafc;
+    padding: 30px 20px;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+    transition: 0.3s ease;
+}
+
+.service-card h3 {
+    color: #1565c0;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.service-card p {
+    color: #64748b;
+    font-size: 15px;
+}
+
+.service-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 30px rgba(21, 101, 192, 0.12);
+    border-color: #90caf9;
+}
+
+.features {
+    padding: 70px 8%;
+    text-align: center;
+    background: #f4f7fb;
+}
+.feature-container {
+    max-width: 1000px;
+    margin: 40px auto 0;
+
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+}
+.feature {
+    background: white;
+    padding: 30px 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+}
+.feature h3 {
+    color: #1565c0;
+    margin-bottom: 10px;
+}
+.feature p {
+    color: #64748b;
+}
+.about {
+    padding: 70px 15%;
+    text-align: center;
+    background: white;
+}
+.about p {
+    max-width: 850px;
+    margin: 25px auto 0;
+    color: #64748b;
+    font-size: 17px;
+}
+.cta {
+    padding: 70px 20px;
+    text-align: center;
+
+    background: linear-gradient(
+        135deg,
+        #0d47a1,
+        #1976d2
+    );
+
+    color: white;
+}
+.cta h2 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+.cta p {
+    color: #e3f2fd;
+    margin-bottom: 25px;
+}
+.cta .btn {
+    background: white;
+    color: #1565c0;
+}
+.cta .btn:hover {
+    background: #e3f2fd;
+    transform: translateY(-2px);
+}
+@media (max-width: 900px) {
+
+    .service-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .feature-container {
+        grid-template-columns: 1fr;
+    }
+
+    .hero h1 {
+        font-size: 38px;
+    }
+}
+
+
+@media (max-width: 600px) {
+
+    .hero {
+        min-height: 380px;
+        padding: 40px 20px;
+    }
+
+    .hero h1 {
+        font-size: 30px;
+    }
+
+    .hero p {
+        font-size: 17px;
+    }
+
+    .service-container {
+        grid-template-columns: 1fr;
+    }
+
+    .services,
+    .features {
+        padding: 50px 20px;
+    }
+
+    .about {
+        padding: 50px 25px;
+    }
+
+    .services h2,
+    .features h2,
+    .about h2,
+    .cta h2 {
+        font-size: 27px;
+    }
+}

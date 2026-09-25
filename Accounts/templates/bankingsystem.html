@@ -1,0 +1,32 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link rel="stylesheet" href="{% static 'banking1.css' %}">
+<body>
+    <div class="header">
+        <h1 id="heading">VK Banking System</h1>
+        <h2 id="heading">Welcome to our Bank</h2>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>  |
+            <a href="{% url 'register' %}">Registration</a>  | 
+            <a href="{% url 'account' %}">Accounts</a>  |
+            <a href="{% url 'transactions' %}">Transactions</a>  |
+            <a href="{% url 'othertransaction' %}">Other Transactions</a>
+        </nav>
+    </div>
+    {% block welcome %}{% endblock %}
+    {% block register %}{% endblock %}
+    {% block account %}{% endblock %}
+    {% block transaction %}{% endblock %}
+    {% block home %}{% endblock %}
+    {% block others %}{% endblock %}
+    <div class="footer">
+        <h1 id="end">Thank you</h1>
+    </div>
+</body>
+</html>

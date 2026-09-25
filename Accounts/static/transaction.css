@@ -1,0 +1,155 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    color: #1e293b;
+}
+.transaction-container {
+    max-width: 850px;
+    margin: 40px auto;
+    padding: 35px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+.transaction-container h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1e3a8a;
+    font-size: 32px;
+    font-weight: 700;
+}
+.transaction-container table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 15px;
+}
+.transaction-container td:first-child {
+    width: 35%;
+    font-weight: 600;
+    color: #374151;
+    padding-right: 20px;
+}
+.transaction-container td:last-child {
+    width: 65%;
+}
+.transaction-container input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #111827;
+    font-size: 15px;
+    outline: none;
+    transition: all 0.25s ease;
+}
+.transaction-container input[type="text"]:focus {
+    border-color: #2563eb;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.transaction-container input[readonly] {
+    background: #eef2ff;
+    color: #374151;
+    cursor: not-allowed;
+}
+.transaction-container input[type="radio"] {
+    accent-color: #2563eb;
+    margin-right: 6px;
+    transform: scale(1.15);
+    cursor: pointer;
+}
+.transaction-container input[type="radio"] + label {
+    margin-right: 20px;
+}
+
+.transaction-container button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.transaction-container button[name="action"][value="check"] {
+    margin-top: 10px;
+    background: #2563eb;
+    color: white;
+}
+.transaction-container button[name="action"][value="check"]:hover {
+    background: #1d4ed8;
+    transform: translateY(-2px);
+}
+.transaction-container button[name="action"][value="save"] {
+    display: block;
+    width: 180px;
+    margin: 25px auto 0;
+    padding: 13px;
+    background: linear-gradient(135deg, #2563eb, #1e40af);
+    color: white;
+    font-size: 16px;
+    box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+}
+.transaction-container button[name="action"][value="save"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.4);
+}
+.transaction-container p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    color: #dc2626;
+    font-weight: 500;
+}
+#error {
+    display: block;
+    margin-top: 6px;
+    font-size: 13px;
+    font-weight: 500;
+}
+#amount {
+    background: #ffffff;
+}
+#balance_after {
+    font-weight: 600;
+    color: #166534;
+    background: #f0fdf4;
+    border-color: #86efac;
+}
+@media (max-width: 650px) {
+    .transaction-container {
+        margin: 20px;
+        padding: 20px;
+    }
+    .transaction-container h1 {
+        font-size: 26px;
+    }
+    .transaction-container table,
+    .transaction-container tbody,
+    .transaction-container tr,
+    .transaction-container td {
+        display: block;
+        width: 100%;
+    }
+    .transaction-container td:first-child {
+        padding: 0;
+        margin-bottom: 6px;
+    }
+    .transaction-container td:last-child {
+        margin-bottom: 12px;
+    }
+    .transaction-container button[name="action"][value="check"] {
+        width: 100%;
+    }
+    .transaction-container button[name="action"][value="save"] {
+        width: 100%;
+    }
+}
+

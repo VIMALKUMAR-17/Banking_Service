@@ -1,0 +1,63 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+{% block others %}
+<link rel="stylesheet" href="{% static 'othertransactions.css' %}">
+
+<div class="card">
+    
+    <form action="" method="post">    
+        {% csrf_token %}
+        <h1>Other Transactions</h1>
+        {% if message %}
+            <p style="color: green;" id="success">{{ message }}</p>
+            {% endif %}
+        {% if message_error %}
+            <p style="color: red;" id="msg_error">{{ message_error }}</p>
+            {% endif %}
+        <table>
+            <tr>
+                <td>Bank </td>
+                <td>
+                    <select name="banks">
+                        <option value="">Select..</option>
+                        <option value="vk_bank"{% if forms.banks == "vk_bank" %}selected{% endif %}>Vk Bank</option>
+                        <option value="abc_bank"{% if forms.banks == "abc_bank" %}selected{% endif %}>ABC Bank</option>                    
+                    </select>
+                    {% if bank_error %}
+                            <p style="color: red;">{{ bank_error }}</p>
+                        {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Account Number </td>
+                <td>
+                    <input type="text" name="acc_no" value="{{ forms.acc_no|default:'' }}">
+                    <button name="action" value="check">Check</button>
+                    {% if acc_error  %}
+                        <p style="color: red;">{{ acc_error }}</p>
+                    {% endif %}
+                    {% if error %}
+                        <p style="color: red;">{{ error }}</p>
+                    {% endif %}
+                    {% if Name %}
+                        <p style="color: green;">{{ Name }}</p>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td>Amount </td>
+                <td>
+                    <input type="text" name="amount">
+                    <button name="action" value="withdraw">Withdraw</button>
+                    {% if with_error %}
+                        <p style="color: red;">{{ with_error }}</p>
+                    {% endif %}
+                    {% if bal_error %}
+                        <p style="color: red;">{{ bal_error }}</p>
+                    {% endif %}
+                </td>
+            </tr>
+        </table>
+    </form>
+</div>
+{% endblock %}

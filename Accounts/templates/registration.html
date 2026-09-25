@@ -1,0 +1,122 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+{% block register %}
+<link rel="stylesheet" href="{% static 'register.css' %}">
+<h1>New Registration</h1>
+<form action="" method="post">
+    {% csrf_token %}
+<table>
+        <tr>
+            <td>Customer ID :</td>
+            <td><input type="text" name="cust_id" id="" value="{{ cust_id }}" readonly>
+            {% if cust_error %}
+            <p style="color: red;">{{cust_error}}</p>
+            {% endif %}
+            </td>
+        </tr>
+        <tr>
+            <td>First Name :</td>
+            <td><input type="text" name="first_name" id="" value="{{ form_data.first_name|default:'' }}">
+            {% if first_name_error %}
+            <p style="color: red;">{{first_name_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Last Name :</td>
+            <td><input type="text" name="last_name" id="" value="{{ form_data.last_name|default:'' }}">
+            {% if last_name_error %}
+            <p style="color: red;">{{last_name_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Date of Birth :</td>
+            <td><input type="date" name="dob" id="" value="{{ form_data.dob|default:'' }}">
+            {% if dob_error %}
+            <p style="color: red;">{{dob_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Gender :</td>
+            <td><input type="radio" name="gender" id="" value="male" {% if gender == "male" %}checked{% endif %}> Male 
+                <input type="radio" name="gender" id="" value="female" {% if gender == "female" %}checked{% endif %}> Female
+                <input type="radio" name="gender" id="" value="other" {% if gender == "other" %}checked{% endif %}> Others
+            {% if gender_error %}
+            <p style="color: red;">{{gender_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Phone No. :</td>
+            <td><input type="text" name="phone" id="" value="{{ form_data.phone|default:'' }}">
+            {% if phone_error %}
+            <p style="color: red;">{{phone_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Email ID :</td>
+            <td><input type="email" name="email" id="" value="{{ form_data.email|default:'' }}">
+            {% if email_error %}
+            <p style="color: red;">{{email_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Address :</td>
+            <td><textarea name="address" id="">{{ form_data.address|default:'' }}</textarea>
+            {% if address_error %}
+            <p style="color: red;">{{address_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>City :</td>
+            <td><input type="text" name="city" id="" value="{{ form_data.city|default:'' }}">
+            {% if city_error %}
+            <p style="color: red;">{{city_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>State :</td>
+            <td><input type="text" name="state" id="" value="{{ form_data.state|default:'' }}">
+            {% if state_error %}
+            <p style="color: red;">{{state_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Pincode :</td>
+            <td><input type="text" name="pincode" id="" value="{{ form_data.pincode|default:'' }}">
+            {% if pincode_error %}
+            <p style="color: red;">{{pincode_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Aadhar No. :</td>
+            <td><input type="text" name="aadhar" id="" value="{{ form_data.aadhar|default:'' }}">
+            {% if aadhar_error %}
+            <p style="color: red;">{{aadhar_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Pan No. :</td>
+            <td><input type="text" name="pan" id="" value="{{ form_data.pan|default:'' }}" >
+            {% if pan_error %}
+            <p style="color: red;">{{pan_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Created at :</td>
+            <td><input type="date" name="created_at" id="" value="{{ today|date:'Y-m-d' }}" readonly>
+            {% if created_error %}
+            <p style="color: red;">{{created_error}}</p>
+            {% endif %}</td>
+        </tr>
+        <tr>
+            <td>Status :</td>
+            <td><input type="radio" name="status" id="" value="active" {% if status == "active" %}checked{% endif %}> Active
+            <input type="radio" name="status" id="" value="inactive" {% if status == "inactive" %}checked{% endif %}> Inactive
+            {% if status_error %}
+            <p style="color: red;">{{status_error}}</p>
+            {% endif %}</td>
+        </tr>
+    </table>
+    <button>Submit</button>
+    
+</form>
+{% endblock %}

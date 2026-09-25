@@ -1,0 +1,73 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+{% block transaction %}
+<link rel="stylesheet" href="{% static 'transaction.css' %}">
+<script>
+
+    function calculateBalance() {
+        let balance = parseFloat(document.getElementById('bal').value) || 0;
+        let amount = parseFloat(document.getElementById('amount').value) || 0;
+        let transaction = document.querySelector('input[name="transaction_type"]:checked');
+        if (transaction.value === "deposit") {
+            document.getElementById('balance_after').value = balance + amount;
+        }
+        else if (transaction.value === "withdraw") {
+            if(balance<amount){
+                document.getElementById('error').innerText="Insufficient Balance"
+            }
+            else{
+                document.getElementById('error').innerText=""
+                document.getElementById('balance_after').value = balance - amount;
+            }           
+        }
+    }
+</script>
+<div class="transaction-container">
+    <h1>Transactions</h1>
+    <form action="" method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <td>Transaction ID</td>
+                <td><input type="text" name="transaction_id" id="" value="{{number}}" readonly></td>
+            </tr>
+            <tr>
+                <td>Account Number</td>
+                <td><input type="text" name="acc_no" id="" value="{{ forms.acc_no|default:'' }}">
+                {% if error %}
+                <p style="color: red;">{{error}}</p>
+                {% endif %}
+                <button name="action" value="check">Check</button></td>
+                
+            </tr>
+            <tr>
+                <td>Holder Name</td>
+                <td><input type="text" name="acc_name" id="" value="{{name}}" readonly></td>
+            </tr>
+            <tr>
+                <td>Current Balance</td>
+                <td><input type="text" name="current_balance" id="bal" value="{{balances}}" readonly></td>
+            </tr>
+            <tr>
+                <td>Transaction Type</td>
+                <td><input type="radio" name="transaction_type" id="" value="deposit" >Deposit
+                <input type="radio" name="transaction_type" id="" value="withdraw" >Withdraw</td>
+            </tr>
+            <tr>
+                <td>Amount</td>
+                <td><input type="text" name="amount" id="amount" onchange="calculateBalance(this)">
+                <span id="error" style="color: red;"></span></td>
+            </tr>            
+            <tr>
+                <td>Balance After</td>
+                <td><input type="text" name="balance_after" id="balance_after"></td>
+            </tr>
+            <tr>
+                <td>Transaction Date</td>
+                <td><input type="text" name="transaction_date" id="" value="{{today|date:'Y-m-d'}}" readonly></td>
+            </tr>
+        </table>
+        <button name="action" value="save">Save</button>
+    </form>
+    </div>
+{% endblock %}

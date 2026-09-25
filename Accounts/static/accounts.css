@@ -1,0 +1,152 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #f1f5f9;
+    color: #1e293b;
+}
+.account-container {
+    min-height: 110vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    font-family: "Segoe UI", Arial, sans-serif;
+}
+.account-container form {
+    width: 100%;
+    max-width: 850px;
+    background: #ffffff;
+    padding: 35px 40px;
+    border-radius: 18px;
+    box-shadow: 0 15px 40px rgba(30, 64, 175, 0.15);
+}
+.account-container h1 {
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 700;
+}
+.account-container table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 18px;
+}
+.account-container td:first-child {
+    width: 35%;
+    color: #334155;
+    font-weight: 600;
+    font-size: 15px;
+    padding-right: 20px;
+}
+.account-container input[type="text"] {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    border: 1px solid #cbd5e1;
+    border-radius: 9px;
+    outline: none;
+    font-size: 15px;
+    color: #1e293b;
+    background: #fff;
+    transition: all 0.25s ease;
+}
+.account-container input[type="text"]:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+.account-container input[readonly] {
+    background: #f1f5f9;
+    color: #64748b;
+    cursor: not-allowed;
+}
+.account-container input[type="radio"] {
+    accent-color: #2563eb;
+    margin-right: 6px;
+    cursor: pointer;
+}
+.account-container td:last-child {
+    color: #475569;
+}
+.account-container input[type="radio"] + label {
+    margin-right: 10px;
+}
+.account-container button[name="action"][value="check"] {
+    margin-top: 10px;
+    margin-left: 8px;
+    padding: 9px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #2563eb;
+    color: white;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+.account-container button[name="action"][value="check"]:hover {
+    background: #115e59;
+    transform: translateY(-1px);
+}
+.account-container button[name="action"][value="save"] {
+    display: block;
+    width: 100%;
+    margin-top: 20px;
+    padding: 14px;
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2563eb, #1d4ed8);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 7px 18px rgba(37, 99, 235, 0.25);
+    transition: all 0.25s ease;
+}
+.account-container button[name="action"][value="save"]:hover {
+    background: linear-gradient(135deg, #1d4ed8, #1e40af);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 22px rgba(37, 99, 235, 0.3);
+}
+.account-container p {
+    margin: 7px 0 0;
+    font-size: 13px;
+    font-weight: 500;
+}
+@media (max-width: 650px) {
+    .account-container {
+        padding: 20px 10px;
+    }
+    .account-container form {
+        padding: 25px 20px;
+    }
+    .account-container h1 {
+        font-size: 26px;
+    }
+    .account-container table,
+    .account-container tbody,
+    .account-container tr,
+    .account-container td {
+        display: block;
+        width: 100%;
+    }
+    .account-container td:first-child {
+        padding-right: 0;
+        margin-bottom: 7px;
+    }
+    .account-container tr {
+        margin-bottom: 15px;
+    }
+    .account-container input[type="text"] {
+        width: 100%;
+    }
+    .account-container button[name="action"][value="check"] {
+        margin-left: 0;
+        margin-top: 8px;
+    }
+}
