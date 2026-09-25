@@ -1,0 +1,5 @@
+{
+   "acc_no":860760,
+   "transaction_type":"Deposit",
+  "amount":5000
+}

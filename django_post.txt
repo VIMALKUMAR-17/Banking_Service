@@ -1,0 +1,64 @@
+import requests
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework import status
+
+class ProcessWithdrawalView(APIView):
+    def post(self, request, *format=None):
+        # 1. Get data from your app's frontend/request
+        account_number = request.data.get('accno')
+        withdraw_amount = request.data.get('amount')
+        
+        if not account_number or not withdraw_amount:
+            return Response(
+                {"error": "Account number and amount are required."}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        
+        # 2. Define the Target Bank's API details
+        # Replace with Bank 1's actual endpoint
+        BANK1_API_URL = "https://bank1.com" 
+        
+        # Payload required by Bank 1's POST API
+        payload = {
+            "account_number": account_number,
+            "amount": float(withdraw_amount),
+            "transaction_type": "DEBIT"
+        }
+        
+        # Headers (e.g., Content-Type and Authentication)
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer YOUR_MUTUAL_API_TOKEN_HERE"  # Secure your API
+        }
+        
+        try:
+            # 3. Call the other bank's POST API
+            response = requests.post(BANK1_API_URL, json=payload, headers=headers, timeout=10)
+            
+            # 4. Handle Bank 1's response
+            if response.status_code == status.HTTP_201_CREATED or response.status_code == status.HTTP_200_OK:
+                bank1_data = response.json()
+                return Response({
+                    "message": "Withdrawal processed successfully at both banks.",
+                    "bank1_response": bank1_data
+                }, status=status.HTTP_200_OK)
+                
+            else:
+                # If Bank 1 rejects the transaction (e.g., Insufficient Funds)
+                return Response({
+                    "error": "Transaction rejected by the remote bank.",
+                    "details": response.json()
+                }, status=response.status_code)
+                
+        except requests.exceptions.Timeout:
+            return Response({"error": "Remote bank server timed out."}, status=status.HTTP_504_GATEWAY_TIMEOUT)
+        except requests.exceptions.RequestException as e:
+            return Response({"error": f"Failed to connect to the remote bank: {str(e)}"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
+
+
+
+prompt
+------------------------------------------
+I create two bank apps. one app create post and get api using DRF. another app gets accno and check it available in other bank and display the account holder name and balance. after getting withdraw amount, how to call another bank post api in bank app
+
