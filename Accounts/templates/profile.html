@@ -1,0 +1,115 @@
+{% extends 'bankingsystem.html' %}
+{% load static %}
+{% block profile %}
+
+<link rel="stylesheet" href="{% static 'profile.css' %}">
+<div class="container">
+
+    <h1>Account Profile</h1>
+
+    <div class="search-box">
+
+        <input
+            type="text"
+            id="accountNumber"
+            placeholder="Enter Account Number"
+        >
+
+        <button onclick="getProfile()">Search</button>
+
+    </div>
+
+    <div id="message"></div>
+
+    <div id="profileDetails"></div>
+
+</div>
+
+
+<script>
+
+function getProfile() {
+
+    const accNo = document.getElementById("accountNumber").value.trim();
+
+    const message = document.getElementById("message");
+    const details = document.getElementById("profileDetails");
+
+    if (accNo === "") {
+        message.innerHTML = "Please enter account number";
+        details.innerHTML = "";
+        return;
+    }
+
+    message.innerHTML = "Loading...";
+    details.innerHTML = "";
+
+    fetch(`/getaccount/${accNo}/`)
+
+        .then(response => response.json())
+
+        .then(data => {
+
+            if (data.error) {
+
+                message.innerHTML = data.error;
+                details.innerHTML = "";
+
+                return;
+            }
+
+            message.innerHTML = "";
+
+            details.innerHTML = `
+
+                <div class="row">
+                    <div class="label">Account ID</div>
+                    <div class="value">${data.acc_id}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Account Number</div>
+                    <div class="value">${data.acc_no}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Account Holder</div>
+                    <div class="value">${data.acc_holder}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Customer ID</div>
+                    <div class="value">${data.cust_id}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Account Type</div>
+                    <div class="value">${data.acc_type}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Balance</div>
+                    <div class="value">₹ ${data.balance}</div>
+                </div>
+
+                <div class="row">
+                    <div class="label">Created Date</div>
+                    <div class="value">${data.created_at}</div>
+                </div>
+
+            `;
+
+        })
+
+        .catch(error => {
+
+            message.innerHTML = "Unable to connect to server";
+            details.innerHTML = "";
+
+            console.log(error);
+
+        });
+}
+
+</script>
+ {% endblock %}

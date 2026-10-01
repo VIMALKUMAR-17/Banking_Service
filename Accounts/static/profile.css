@@ -1,0 +1,146 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #eef2ff, #dbeafe);
+    color: #1e293b;
+    min-height: 100%;
+}
+h1 {
+    text-align: center;
+    color: #1e3a8a;
+    margin-bottom: 30px;
+    font-size: 32px;
+    font-weight: 700;
+}
+.container {
+    width: 700px;
+    max-width: 90%;
+    min-height: 80vh;
+    margin: 50px auto;
+    padding: 30px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.12);
+}
+
+
+.search-box {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.search-box input {
+    flex: 1;
+    height: 45px;
+    padding: 0 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+.search-box input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
+.search-box button {
+    height: 45px;
+    padding: 0 25px;
+    border: none;
+    border-radius: 6px;
+    background: #007bff;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.search-box button:hover {
+    background: #0056b3;
+}
+
+#message {
+    text-align: center;
+    margin: 15px 0;
+    color: #dc3545;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+#profileDetails {
+    margin-top: 20px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.row {
+    display: flex;
+    min-height: 50px;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.row:last-child {
+    border-bottom: none;
+}
+
+.label {
+    width: 40%;
+    padding: 15px;
+    background: #f5f7fa;
+    font-weight: 600;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.value {
+    width: 60%;
+    padding: 15px;
+    color: #555;
+    background: #ffffff;
+    box-sizing: border-box;
+}
+
+@media (max-width: 600px) {
+
+    .container {
+        width: 90%;
+        padding: 20px;
+        margin: 30px auto;
+    }
+    .container h2 {
+        font-size: 23px;
+    }
+
+    .search-box {
+        flex-direction: column;
+    }
+
+    .search-box input,
+    .search-box button {
+        width: 100%;
+    }
+    .row {
+        flex-direction: column;
+    }
+
+    .label,
+    .value {
+        width: 100%;
+    }
+
+    .label {
+        padding-bottom: 8px;
+    }
+
+    .value {
+        padding-top: 8px;
+    }
+}

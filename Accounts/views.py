@@ -257,27 +257,6 @@ def createTransaction(request):
 def home(request):
     return render(request,'home.html')
 
-def login(request):
-    if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-
-        if (username == 'Vimal_17' and password == '12345') or \
-           (username == 'Rohith_18' and password == '54321'):
-
-            request.session['username'] = username
-
-            return redirect('profile')
-
-        else:
-            return render(
-                request,
-                'login.html',
-                {'error': '* Invalid Username And Password'}
-            )
-
-    return render(request, 'login.html')
-
 
 def othertransaction(request):
     if request.method == 'POST':
@@ -356,3 +335,6 @@ def othertransaction(request):
                 return render(request, 'otherTransaction.html', {'message_error': 'Network error. Transaction rejected...', 'forms': request.POST})
 
     return render(request, 'otherTransaction.html')
+
+def profile(request):
+    return render(request, 'profile.html')
