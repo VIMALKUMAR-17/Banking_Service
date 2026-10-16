@@ -1,8 +1,4 @@
 
-/* =========================================
-   BANKING SERVICE - RESPONSIVE ALL FIELDS
-   ========================================= */
-
 *,
 *::before,
 *::after {
@@ -45,7 +41,6 @@ form {
     max-width: 100%;
 }
 
-/* All form fields */
 input,
 select,
 textarea,
@@ -102,7 +97,6 @@ label {
     overflow-wrap: anywhere;
 }
 
-/* Form spacing */
 form {
     width: 100%;
     margin-left: auto;
@@ -130,7 +124,6 @@ form {
     gap: 16px;
 }
 
-/* Buttons */
 button,
 input[type="submit"],
 input[type="button"],
@@ -148,7 +141,6 @@ button img,
     vertical-align: middle;
 }
 
-/* Tables: preserve columns and allow horizontal scrolling */
 .table-responsive,
 .table-container {
     width: 100%;
@@ -172,7 +164,6 @@ td {
     overflow-wrap: anywhere;
 }
 
-/* Search fields */
 .search-box {
     display: flex;
     flex-wrap: wrap;
@@ -185,7 +176,6 @@ td {
     flex: 1 1 200px;
 }
 
-/* Long account numbers and messages */
 p,
 td,
 th,
@@ -194,12 +184,10 @@ a {
     overflow-wrap: anywhere;
 }
 
-/* Prevent fixed-width content from causing overflow */
 iframe {
     max-width: 100%;
 }
 
-/* Tablets */
 @media (max-width: 768px) {
     .form-row {
         grid-template-columns: minmax(0, 1fr);
@@ -236,7 +224,6 @@ iframe {
     }
 }
 
-/* Mobile phones */
 @media (max-width: 480px) {
     body {
         font-size: 15px;
