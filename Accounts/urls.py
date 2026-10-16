@@ -1,7 +1,12 @@
+
 from django.urls import path
-from .views import register, account, transactions, getAccount, getAllAccount, createTransaction, home, othertransaction, profile
+from .views import (
+    register, account, transactions, getAccount, getAllAccount,
+    createTransaction, home, othertransaction, profile
+)
 
 urlpatterns = [
+    path('', home, name='index'),
     path('register/', register, name='register'),
     path('account/', account, name='account'),
     path('transactions/', transactions, name='transactions'),
