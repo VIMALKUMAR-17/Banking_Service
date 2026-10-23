@@ -1,13 +1,99 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
-{% block transaction %}
+
+{% block title %}Transactions | VK Banking System{% endblock %}
+
+{% block extra_head %}
 <link rel="stylesheet" href="{% static 'transaction.css' %}">
+{% endblock %}
+
+{% block transaction %}
+<div class="page page--form transaction-container">
+    <header class="page-head reveal">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg> Deposits &amp; withdrawals</span>
+        <h1>Transactions</h1>
+        <p>Check an account, choose deposit or withdraw, and review the balance after the transaction before saving.</p>
+    </header>
+
+    <form action="" method="post" class="card card--pad reveal" style="--i:1">
+        {% csrf_token %}
+
+        <section class="form-section" aria-labelledby="sec-acct">
+            <h2 class="form-section__title" id="sec-acct"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg> Account details</h2>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field__label" for="transaction_id">Transaction ID</label>
+                    <input class="control" type="text" name="transaction_id" id="transaction_id" value="{{number}}" readonly>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="transaction_date">Transaction date</label>
+                    <input class="control" type="text" name="transaction_date" id="transaction_date" value="{{today|date:'Y-m-d'}}" readonly>
+                </div>
+                <div class="field field--full">
+                    <label class="field__label" for="acc_no">Account number</label>
+                    <div class="input-group">
+                        <input class="control" type="text" name="acc_no" id="acc_no" value="{{ forms.acc_no|default:'' }}" inputmode="numeric" autocomplete="off" placeholder="Enter account number"{% if error %} aria-invalid="true" aria-describedby="acc_no_error"{% endif %}>
+                        <button class="btn btn--secondary" name="action" value="check">Check</button>
+                    </div>
+                    {% if error %}
+                    <p class="field-error" id="acc_no_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ error|cut:"* " }}</span></p>
+                    {% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="acc_name">Holder name</label>
+                    <input class="control" type="text" name="acc_name" id="acc_name" value="{{name}}" readonly>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="bal">Current balance</label>
+                    <div class="input-affix">
+                        <span class="input-affix__prefix" aria-hidden="true">&#8377;</span>
+                        <input class="control" type="text" name="current_balance" id="bal" value="{{balances}}" readonly>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="sec-txn">
+            <h2 class="form-section__title" id="sec-txn"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg> Transaction</h2>
+            <div class="form-grid">
+                <div class="field field--full">
+                    <span class="field__label" id="transaction_type_label">Transaction type</span>
+                    <div class="choice-group choice-group--txn" role="radiogroup" aria-labelledby="transaction_type_label">
+                        <label class="choice choice--deposit"><input type="radio" name="transaction_type" id="type_deposit" value="deposit"><span class="choice__body"><svg class="icon" aria-hidden="true"><use href="#i-arrow-down-left"/></svg>Deposit</span></label>
+                        <label class="choice choice--withdraw"><input type="radio" name="transaction_type" id="type_withdraw" value="withdraw"><span class="choice__body"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg>Withdraw</span></label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="amount">Amount</label>
+                    <div class="input-affix">
+                        <span class="input-affix__prefix" aria-hidden="true">&#8377;</span>
+                        <input class="control" type="text" name="amount" id="amount" onchange="calculateBalance(this)" inputmode="decimal" autocomplete="off" placeholder="0.00">
+                    </div>
+                    <span id="error" class="field-error" role="alert"></span>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="balance_after">Balance after</label>
+                    <div class="input-affix">
+                        <span class="input-affix__prefix" aria-hidden="true">&#8377;</span>
+                        <input class="control" type="text" name="balance_after" id="balance_after" inputmode="decimal" autocomplete="off">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="btn-row">
+            <button class="btn btn--primary" name="action" value="save">Save</button>
+        </div>
+    </form>
+</div>
+
 <script>
 
     function calculateBalance() {
         let balance = parseFloat(document.getElementById('bal').value) || 0;
         let amount = parseFloat(document.getElementById('amount').value) || 0;
         let transaction = document.querySelector('input[name="transaction_type"]:checked');
+        if (!transaction) { return; }
         if (transaction.value === "deposit") {
             document.getElementById('balance_after').value = balance + amount;
         }
@@ -18,56 +104,8 @@
             else{
                 document.getElementById('error').innerText=""
                 document.getElementById('balance_after').value = balance - amount;
-            }           
+            }
         }
     }
 </script>
-<div class="transaction-container">
-    <h1>Transactions</h1>
-    <form action="" method="post">
-        {% csrf_token %}
-        <table>
-            <tr>
-                <td>Transaction ID</td>
-                <td><input type="text" name="transaction_id" id="" value="{{number}}" readonly></td>
-            </tr>
-            <tr>
-                <td>Account Number</td>
-                <td><input type="text" name="acc_no" id="" value="{{ forms.acc_no|default:'' }}">
-                {% if error %}
-                <p style="color: red;">{{error}}</p>
-                {% endif %}
-                <button name="action" value="check">Check</button></td>
-                
-            </tr>
-            <tr>
-                <td>Holder Name</td>
-                <td><input type="text" name="acc_name" id="" value="{{name}}" readonly></td>
-            </tr>
-            <tr>
-                <td>Current Balance</td>
-                <td><input type="text" name="current_balance" id="bal" value="{{balances}}" readonly></td>
-            </tr>
-            <tr>
-                <td>Transaction Type</td>
-                <td><input type="radio" name="transaction_type" id="" value="deposit" >Deposit
-                <input type="radio" name="transaction_type" id="" value="withdraw" >Withdraw</td>
-            </tr>
-            <tr>
-                <td>Amount</td>
-                <td><input type="text" name="amount" id="amount" onchange="calculateBalance(this)">
-                <span id="error" style="color: red;"></span></td>
-            </tr>            
-            <tr>
-                <td>Balance After</td>
-                <td><input type="text" name="balance_after" id="balance_after"></td>
-            </tr>
-            <tr>
-                <td>Transaction Date</td>
-                <td><input type="text" name="transaction_date" id="" value="{{today|date:'Y-m-d'}}" readonly></td>
-            </tr>
-        </table>
-        <button name="action" value="save">Save</button>
-    </form>
-    </div>
 {% endblock %}

@@ -1,32 +1,105 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
-{% block profile %}
 
+{% block title %}Account Profile | VK Banking System{% endblock %}
+
+{% block extra_head %}
 <link rel="stylesheet" href="{% static 'profile.css' %}">
-<div class="container">
+{% endblock %}
 
-    <h1>Account Profile</h1>
+{% block profile %}
+<div class="page page--narrow">
 
-    <div class="search-box">
+    <header class="page-head reveal">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg> Accounts</span>
+        <h1>Account Profile</h1>
+        <p>Enter an account number to look up the account details.</p>
+    </header>
 
-        <input
-            type="text"
-            id="accountNumber"
-            placeholder="Enter Account Number"
-        >
+    <section class="card card--pad search-card reveal" style="--i:1" aria-label="Account search">
+        <label class="field__label" for="accountNumber">Account number</label>
 
-        <button onclick="getProfile()">Search</button>
+        <div class="search-box input-group">
+            <input
+                type="text"
+                id="accountNumber"
+                class="control"
+                placeholder="Enter Account Number"
+                inputmode="numeric"
+                autocomplete="off"
+            >
 
+            <button type="button" id="searchBtn" class="btn btn--primary" onclick="getProfile()">
+                <svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>
+                <span class="btn__label">Search</span>
+            </button>
+        </div>
+
+        <div id="message" class="alert-slot" role="status" aria-live="polite"></div>
+    </section>
+
+    <div id="profileDetails" class="profile-results reveal" style="--i:2" aria-live="polite">
+        <div class="state">
+            <span class="state__icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>
+            <h2>Look up an account</h2>
+            <p>The account holder, type, balance and creation date will appear here.</p>
+        </div>
     </div>
-
-    <div id="message"></div>
-
-    <div id="profileDetails"></div>
 
 </div>
 
 
 <script>
+
+var ICON_SEARCH = '<svg class="icon" aria-hidden="true"><use href="#i-search"/></svg>';
+var EMPTY_STATE =
+    '<div class="state">' +
+        '<span class="state__icon"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg></span>' +
+        '<h2>Look up an account</h2>' +
+        '<p>The account holder, type, balance and creation date will appear here.</p>' +
+    '</div>';
+
+function esc(value) {
+    return String(value === null || value === undefined ? "" : value)
+        .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+}
+
+function formatMoney(value) {
+    var n = Number(value);
+    if (value === "" || value === null || isNaN(n)) { return "\u20B9 " + esc(value); }
+    return "\u20B9 " + n.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function formatDate(value) {
+    var d = new Date(value + "T00:00:00");
+    if (isNaN(d.getTime())) { return esc(value); }
+    return d.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
+}
+
+function setLoading(isLoading) {
+    var btn = document.getElementById("searchBtn");
+    btn.disabled = isLoading;
+    btn.innerHTML = isLoading
+        ? '<span class="spinner" aria-hidden="true"></span><span class="btn__label">Searching\u2026</span>'
+        : ICON_SEARCH + '<span class="btn__label">Search</span>';
+}
+
+function showMessage(type, text, withSpinner) {
+    document.getElementById("message").innerHTML =
+        '<div class="alert alert--' + type + '">' +
+        (withSpinner ? '<span class="spinner spinner--dark" aria-hidden="true"></span>'
+                     : '<svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg>') +
+        '<span>' + esc(text) + '</span></div>';
+}
+
+function showState(kind, title, text) {
+    document.getElementById("profileDetails").innerHTML =
+        '<div class="state state--' + kind + '">' +
+            '<span class="state__icon"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg></span>' +
+            '<h2>' + esc(title) + '</h2><p>' + esc(text) + '</p>' +
+        '</div>';
+}
 
 function getProfile() {
 
@@ -36,66 +109,88 @@ function getProfile() {
     const details = document.getElementById("profileDetails");
 
     if (accNo === "") {
-        message.innerHTML = "Please enter account number";
-        details.innerHTML = "";
+        showMessage("error", "Please enter account number");
+        details.innerHTML = EMPTY_STATE;
         return;
     }
 
-    message.innerHTML = "Loading...";
+    message.innerHTML = "";
+    showMessage("info", "Loading...", true);
     details.innerHTML = "";
+    setLoading(true);
 
-    fetch(`/getaccount/${accNo}/`)
+    fetch(`/getaccount/${encodeURIComponent(accNo)}/`)
 
         .then(response => response.json())
 
         .then(data => {
 
+            setLoading(false);
+
             if (data.error) {
 
-                message.innerHTML = data.error;
-                details.innerHTML = "";
+                message.innerHTML = "";
+                showState("error", "Account not found", data.error);
 
                 return;
             }
 
             message.innerHTML = "";
 
+            var holder = String(data.acc_holder || "").trim();
+            var typeSlug = String(data.acc_type || "").toLowerCase().replace(/[^a-z]/g, "");
+
             details.innerHTML = `
 
-                <div class="row">
-                    <div class="label">Account ID</div>
-                    <div class="value">${data.acc_id}</div>
-                </div>
+                <article class="card profile-card">
 
-                <div class="row">
-                    <div class="label">Account Number</div>
-                    <div class="value">${data.acc_no}</div>
-                </div>
+                    <div class="profile-card__head">
+                        <span class="avatar" aria-hidden="true">${esc(holder.charAt(0).toUpperCase() || "?")}</span>
+                        <div class="profile-card__who">
+                            <h2>${esc(holder)}</h2>
+                            <span class="badge badge--${esc(typeSlug || "neutral")}">${esc(data.acc_type)}</span>
+                        </div>
+                        <div class="profile-card__balance">
+                            <span class="profile-card__balance-label">Balance</span>
+                            <strong>${formatMoney(data.balance)}</strong>
+                        </div>
+                    </div>
 
-                <div class="row">
-                    <div class="label">Account Holder</div>
-                    <div class="value">${data.acc_holder}</div>
-                </div>
+                    <div class="detail-grid">
 
-                <div class="row">
-                    <div class="label">Customer ID</div>
-                    <div class="value">${data.cust_id}</div>
-                </div>
+                        <div class="row detail">
+                            <div class="label detail__label">Account ID</div>
+                            <div class="value detail__value">${esc(data.acc_id)}</div>
+                        </div>
 
-                <div class="row">
-                    <div class="label">Account Type</div>
-                    <div class="value">${data.acc_type}</div>
-                </div>
+                        <div class="row detail">
+                            <div class="label detail__label">Account Number</div>
+                            <div class="value detail__value">${esc(data.acc_no)}</div>
+                        </div>
 
-                <div class="row">
-                    <div class="label">Balance</div>
-                    <div class="value">₹ ${data.balance}</div>
-                </div>
+                        <div class="row detail">
+                            <div class="label detail__label">Account Holder</div>
+                            <div class="value detail__value">${esc(data.acc_holder)}</div>
+                        </div>
 
-                <div class="row">
-                    <div class="label">Created Date</div>
-                    <div class="value">${data.created_at}</div>
-                </div>
+                        <div class="row detail">
+                            <div class="label detail__label">Customer ID</div>
+                            <div class="value detail__value">${esc(data.cust_id)}</div>
+                        </div>
+
+                        <div class="row detail">
+                            <div class="label detail__label">Account Type</div>
+                            <div class="value detail__value">${esc(data.acc_type)}</div>
+                        </div>
+
+                        <div class="row detail">
+                            <div class="label detail__label">Created Date</div>
+                            <div class="value detail__value">${formatDate(data.created_at)}</div>
+                        </div>
+
+                    </div>
+
+                </article>
 
             `;
 
@@ -103,13 +198,18 @@ function getProfile() {
 
         .catch(error => {
 
-            message.innerHTML = "Unable to connect to server";
-            details.innerHTML = "";
+            setLoading(false);
+            message.innerHTML = "";
+            showState("error", "Unable to connect to server", "Please check your connection and try again.");
 
             console.log(error);
 
         });
 }
 
+document.getElementById("accountNumber").addEventListener("keydown", function (e) {
+    if (e.key === "Enter") { e.preventDefault(); getProfile(); }
+});
+
 </script>
- {% endblock %}
+{% endblock %}

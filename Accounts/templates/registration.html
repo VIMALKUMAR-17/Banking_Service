@@ -1,122 +1,127 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
-{% block register %}
+
+{% block title %}Customer Registration | VK Banking System{% endblock %}
+
+{% block extra_head %}
 <link rel="stylesheet" href="{% static 'register1.css' %}">
-<h1>New Registration</h1>
-<form action="" method="post">
-    {% csrf_token %}
-<table>
-        <tr>
-            <td>Customer ID :</td>
-            <td><input type="text" name="cust_id" id="" value="{{ cust_id }}" readonly>
-            {% if cust_error %}
-            <p class="error">{{cust_error}}</p>
-            {% endif %}
-            </td>
-        </tr>
-        <tr>
-            <td>First Name :</td>
-            <td><input type="text" name="first_name" id="" value="{{ form_data.first_name|default:'' }}">
-            {% if first_name_error %}
-            <p class="error">{{first_name_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Last Name :</td>
-            <td><input type="text" name="last_name" id="" value="{{ form_data.last_name|default:'' }}">
-            {% if last_name_error %}
-            <p class="error">{{last_name_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Date of Birth :</td>
-            <td><input type="date" name="dob" id="" value="{{ form_data.dob|default:'' }}">
-            {% if dob_error %}
-            <p class="error">{{dob_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Gender :</td>
-            <td><input type="radio" name="gender" id="" value="male" {% if gender == "male" %}checked{% endif %}> Male 
-                <input type="radio" name="gender" id="" value="female" {% if gender == "female" %}checked{% endif %}> Female
-                <input type="radio" name="gender" id="" value="other" {% if gender == "other" %}checked{% endif %}> Others
-            {% if gender_error %}
-            <p class="error">{{gender_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Phone No. :</td>
-            <td><input type="text" name="phone" id="" value="{{ form_data.phone|default:'' }}">
-            {% if phone_error %}
-            <p class="error">{{phone_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Email ID :</td>
-            <td><input type="email" name="email" id="" value="{{ form_data.email|default:'' }}">
-            {% if email_error %}
-            <p class="error">{{email_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Address :</td>
-            <td><textarea name="address" id="">{{ form_data.address|default:'' }}</textarea>
-            {% if address_error %}
-            <p class="error">{{address_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>City :</td>
-            <td><input type="text" name="city" id="" value="{{ form_data.city|default:'' }}">
-            {% if city_error %}
-            <p class="error">{{city_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>State :</td>
-            <td><input type="text" name="state" id="" value="{{ form_data.state|default:'' }}">
-            {% if state_error %}
-            <p class="error">{{state_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Pincode :</td>
-            <td><input type="text" name="pincode" id="" value="{{ form_data.pincode|default:'' }}">
-            {% if pincode_error %}
-            <p class="error">{{pincode_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Aadhar No. :</td>
-            <td><input type="text" name="aadhar" id="" value="{{ form_data.aadhar|default:'' }}">
-            {% if aadhar_error %}
-            <p class="error">{{aadhar_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Pan No. :</td>
-            <td><input type="text" name="pan" id="" value="{{ form_data.pan|default:'' }}" >
-            {% if pan_error %}
-            <p class="error">{{pan_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Created at :</td>
-            <td><input type="date" name="created_at" id="" value="{{ today|date:'Y-m-d' }}" readonly>
-            {% if created_error %}
-            <p class="error">{{created_error}}</p>
-            {% endif %}</td>
-        </tr>
-        <tr>
-            <td>Status :</td>
-            <td><input type="radio" name="status" id="" value="active" {% if status == "active" %}checked{% endif %}> Active
-            <input type="radio" name="status" id="" value="inactive" {% if status == "inactive" %}checked{% endif %}> Inactive
-            {% if status_error %}
-            <p class="error">{{status_error}}</p>
-            {% endif %}</td>
-        </tr>
-    </table>
-    <button>Submit</button>
-    
-</form>
+{% endblock %}
+
+{% block register %}
+<div class="page page--form">
+    <header class="page-head reveal">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-user-plus"/></svg> Customers</span>
+        <h1>New Registration</h1>
+        <p>Add a new customer. Fill in the details below and submit to create the customer record.</p>
+    </header>
+
+    <form action="" method="post" class="card card--pad reveal" style="--i:1">
+        {% csrf_token %}
+        <p class="form-note">All fields are required.</p>
+
+        <section class="form-section" aria-labelledby="sec-personal">
+            <h2 class="form-section__title" id="sec-personal"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg> Personal details</h2>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field__label" for="cust_id">Customer ID</label>
+                    <input class="control" type="text" name="cust_id" id="cust_id" value="{{ cust_id }}" readonly{% if cust_error %} aria-invalid="true" aria-describedby="cust_id_error"{% endif %}>
+                    {% if cust_error %}<p class="field-error" id="cust_id_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ cust_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="first_name">First name</label>
+                    <input class="control" type="text" name="first_name" id="first_name" value="{{ form_data.first_name|default:'' }}" placeholder="Enter first name" autocomplete="given-name"{% if first_name_error %} aria-invalid="true" aria-describedby="first_name_error"{% endif %}>
+                    {% if first_name_error %}<p class="field-error" id="first_name_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ first_name_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="last_name">Last name</label>
+                    <input class="control" type="text" name="last_name" id="last_name" value="{{ form_data.last_name|default:'' }}" placeholder="Enter last name" autocomplete="family-name"{% if last_name_error %} aria-invalid="true" aria-describedby="last_name_error"{% endif %}>
+                    {% if last_name_error %}<p class="field-error" id="last_name_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ last_name_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="dob">Date of birth</label>
+                    <input class="control" type="date" name="dob" id="dob" value="{{ form_data.dob|default:'' }}" autocomplete="bday"{% if dob_error %} aria-invalid="true" aria-describedby="dob_error"{% endif %}>
+                    {% if dob_error %}<p class="field-error" id="dob_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ dob_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field field--full">
+                    <span class="field__label" id="gender_label">Gender</span>
+                    <div class="choice-group" role="radiogroup" aria-labelledby="gender_label">
+                        <label class="choice"><input type="radio" name="gender" id="gender_male" value="male" {% if gender == "male" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Male</span></label>
+                        <label class="choice"><input type="radio" name="gender" id="gender_female" value="female" {% if gender == "female" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Female</span></label>
+                        <label class="choice"><input type="radio" name="gender" id="gender_other" value="other" {% if gender == "other" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Others</span></label>
+                    </div>
+                    {% if gender_error %}<p class="field-error" id="gender_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ gender_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="sec-contact">
+            <h2 class="form-section__title" id="sec-contact"><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg> Contact details</h2>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field__label" for="phone">Phone no.</label>
+                    <input class="control" type="text" name="phone" id="phone" value="{{ form_data.phone|default:'' }}" placeholder="Enter phone number" inputmode="tel" autocomplete="tel"{% if phone_error %} aria-invalid="true" aria-describedby="phone_error"{% endif %}>
+                    {% if phone_error %}<p class="field-error" id="phone_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ phone_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="email">Email ID</label>
+                    <input class="control" type="email" name="email" id="email" value="{{ form_data.email|default:'' }}" placeholder="name@example.com" autocomplete="email"{% if email_error %} aria-invalid="true" aria-describedby="email_error"{% endif %}>
+                    {% if email_error %}<p class="field-error" id="email_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ email_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field field--full">
+                    <label class="field__label" for="address">Address</label>
+                    <textarea class="control" name="address" id="address" rows="3" placeholder="House / street / area" autocomplete="street-address"{% if address_error %} aria-invalid="true" aria-describedby="address_error"{% endif %}>{{ form_data.address|default:'' }}</textarea>
+                    {% if address_error %}<p class="field-error" id="address_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ address_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="city">City</label>
+                    <input class="control" type="text" name="city" id="city" value="{{ form_data.city|default:'' }}" placeholder="Enter city" autocomplete="address-level2"{% if city_error %} aria-invalid="true" aria-describedby="city_error"{% endif %}>
+                    {% if city_error %}<p class="field-error" id="city_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ city_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="state">State</label>
+                    <input class="control" type="text" name="state" id="state" value="{{ form_data.state|default:'' }}" placeholder="Enter state" autocomplete="address-level1"{% if state_error %} aria-invalid="true" aria-describedby="state_error"{% endif %}>
+                    {% if state_error %}<p class="field-error" id="state_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ state_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="pincode">Pincode</label>
+                    <input class="control" type="text" name="pincode" id="pincode" value="{{ form_data.pincode|default:'' }}" placeholder="Enter pincode" inputmode="numeric" autocomplete="postal-code"{% if pincode_error %} aria-invalid="true" aria-describedby="pincode_error"{% endif %}>
+                    {% if pincode_error %}<p class="field-error" id="pincode_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ pincode_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="sec-kyc">
+            <h2 class="form-section__title" id="sec-kyc"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> Identity &amp; status</h2>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field__label" for="aadhar">Aadhar no.</label>
+                    <input class="control" type="text" name="aadhar" id="aadhar" value="{{ form_data.aadhar|default:'' }}" placeholder="Enter Aadhar number" inputmode="numeric" autocomplete="off"{% if aadhar_error %} aria-invalid="true" aria-describedby="aadhar_error"{% endif %}>
+                    {% if aadhar_error %}<p class="field-error" id="aadhar_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ aadhar_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="pan">PAN no.</label>
+                    <input class="control" type="text" name="pan" id="pan" value="{{ form_data.pan|default:'' }}" placeholder="Enter PAN number" autocomplete="off"{% if pan_error %} aria-invalid="true" aria-describedby="pan_error"{% endif %}>
+                    {% if pan_error %}<p class="field-error" id="pan_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ pan_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field">
+                    <label class="field__label" for="created_at">Created at</label>
+                    <input class="control" type="date" name="created_at" id="created_at" value="{{ today|date:'Y-m-d' }}" readonly{% if created_error %} aria-invalid="true" aria-describedby="created_at_error"{% endif %}>
+                    {% if created_error %}<p class="field-error" id="created_at_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ created_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+                <div class="field field--full">
+                    <span class="field__label" id="status_label">Status</span>
+                    <div class="choice-group" role="radiogroup" aria-labelledby="status_label">
+                        <label class="choice"><input type="radio" name="status" id="status_active" value="active" {% if status == "active" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Active</span></label>
+                        <label class="choice"><input type="radio" name="status" id="status_inactive" value="inactive" {% if status == "inactive" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Inactive</span></label>
+                    </div>
+                    {% if status_error %}<p class="field-error" id="status_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ status_error|cut:"* " }}</span></p>{% endif %}
+                </div>
+            </div>
+        </section>
+
+        <div class="btn-row">
+            <button class="btn btn--primary">Submit</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

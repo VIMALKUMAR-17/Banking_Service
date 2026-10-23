@@ -1,48 +1,79 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
-{% block account %}
+
+{% block title %}Create Account | VK Banking System{% endblock %}
+
+{% block extra_head %}
 <link rel="stylesheet" href="{% static 'accounts.css' %}">
-    <div class="account-container">
-        <form action="" method="post">
-            {% csrf_token %}
-            <h1>Create Account</h1>
-            <table>
-                <tr>
-                    <td>Account ID</td>
-                    <td><input type="text" name="acc_id" id="" value="{{number}}" readonly></td>
-                </tr>            
-                <tr>
-                    <td>Customer ID</td>
-                    <td><input type="text" name="cust_id" id="" value="{{ form_data.cust_id|default:'' }}">
+{% endblock %}
+
+{% block account %}
+<div class="page page--form account-container">
+    <header class="page-head reveal">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg> Accounts</span>
+        <h1>Create Account</h1>
+        <p>Enter a Customer ID and press Check to load the account holder and generate an account number, then choose the account type and opening balance.</p>
+    </header>
+
+    <form action="" method="post" class="card card--pad reveal" style="--i:1">
+        {% csrf_token %}
+
+        <section class="form-section" aria-labelledby="sec-customer">
+            <h2 class="form-section__title" id="sec-customer"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg> Customer</h2>
+            <div class="form-grid">
+                <div class="field">
+                    <label class="field__label" for="acc_id">Account ID</label>
+                    <input class="control" type="text" name="acc_id" id="acc_id" value="{{number}}" readonly>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="cust_id">Customer ID</label>
+                    <div class="input-group">
+                        <input class="control" type="text" name="cust_id" id="cust_id" value="{{ form_data.cust_id|default:'' }}" inputmode="numeric" autocomplete="off" placeholder="Enter customer ID"{% if error %} aria-invalid="true" aria-describedby="cust_id_error"{% endif %}>
+                        <button class="btn btn--secondary" name="action" value="check">Check</button>
+                    </div>
                     {% if error %}
-                    <p style="color: red;">{{error}}</p>
+                    <p class="field-error" id="cust_id_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ error|cut:"* " }}</span></p>
                     {% endif %}
-                    <button name="action" value="check">Check</button></td>
-                </tr>
-                <tr>
-                    <td>Account Holder</td>
-                    <td><input type="text" name="acc_holder" id="" value="{{holder_name}}" readonly></td>
-                </tr>
-                <tr>
-                    <td>Account Number</td>
-                    <td><input type="text" name="acc_no" id="" value="{{acc}}" readonly></td>
-                </tr>
-                <tr>
-                    <td>Account Type</td>
-                    <td><input type="radio" name="acc_type" id="" value="Savings">Savings
-                    <input type="radio" name="acc_type" id="" value="Current">Current
-                    <input type="radio" name="acc_type" id="" value="Fixed Deposit">Fixed Deposit</td>
-                </tr>
-                <tr>
-                    <td>Balance</td>
-                    <td><input type="text" name="balance" id=""></td>
-                </tr>
-                <tr>
-                    <td>Created At</td>
-                    <td><input type="text" name="created_at" id="" value="{{today|date:'Y-m-d'}}" readonly></td>
-                </tr>
-            </table>
-            <button name="action" value="save">Submit</button>
-        </form>
-    </div>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="acc_holder">Account holder</label>
+                    <input class="control" type="text" name="acc_holder" id="acc_holder" value="{{holder_name}}" readonly>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="acc_no">Account number</label>
+                    <input class="control" type="text" name="acc_no" id="acc_no" value="{{acc}}" readonly>
+                </div>
+            </div>
+        </section>
+
+        <section class="form-section" aria-labelledby="sec-setup">
+            <h2 class="form-section__title" id="sec-setup"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg> Account setup</h2>
+            <div class="form-grid">
+                <div class="field field--full">
+                    <span class="field__label" id="acc_type_label">Account type</span>
+                    <div class="choice-group" role="radiogroup" aria-labelledby="acc_type_label">
+                        <label class="choice"><input type="radio" name="acc_type" id="acc_type_savings" value="Savings" {% if form_data.acc_type == "Savings" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Savings</span></label>
+                        <label class="choice"><input type="radio" name="acc_type" id="acc_type_current" value="Current" {% if form_data.acc_type == "Current" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Current</span></label>
+                        <label class="choice"><input type="radio" name="acc_type" id="acc_type_fd" value="Fixed Deposit" {% if form_data.acc_type == "Fixed Deposit" %}checked{% endif %}><span class="choice__body"><span class="choice__dot" aria-hidden="true"></span>Fixed Deposit</span></label>
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="balance">Opening balance</label>
+                    <div class="input-affix">
+                        <span class="input-affix__prefix" aria-hidden="true">&#8377;</span>
+                        <input class="control" type="text" name="balance" id="balance" value="{{ form_data.balance|default:'' }}" inputmode="decimal" autocomplete="off" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="field">
+                    <label class="field__label" for="created_at">Created at</label>
+                    <input class="control" type="text" name="created_at" id="created_at" value="{{today|date:'Y-m-d'}}" readonly>
+                </div>
+            </div>
+        </section>
+
+        <div class="btn-row">
+            <button class="btn btn--primary" name="action" value="save">Submit</button>
+        </div>
+    </form>
+</div>
 {% endblock %}

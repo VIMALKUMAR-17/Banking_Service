@@ -1,89 +1,128 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
 
+{% block title %}Home | VK Banking System{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'home1.css' %}">
+{% endblock %}
+
 {% block welcome %}
 
-<link rel="stylesheet" href="{% static 'home1.css' %}">
-
 <section class="hero">
-    <div class="hero-content">
-        <h1>Welcome to Our Banking System</h1>
+    <div class="hero__inner">
+        <div class="hero__content">
+            <span class="hero__eyebrow reveal"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg> VK Banking System</span>
+            <h1 class="reveal" style="--i:1">Welcome to Our Banking System</h1>
+            <p class="hero__lead reveal" style="--i:2">
+                Secure, simple and convenient banking at your fingertips.
+            </p>
+            <div class="hero__actions reveal" style="--i:3">
+                <a href="{% url 'register' %}" class="btn btn--light">New Registration</a>
+                <a href="{% url 'account' %}" class="btn btn--outline-light">Create Account</a>
+            </div>
+        </div>
+
+        <nav class="hero-panel reveal" style="--i:4" aria-label="Quick access">
+            <h2 class="hero-panel__title">Quick access</h2>
+            <a href="{% url 'profile' %}"><svg class="icon" aria-hidden="true"><use href="#i-search"/></svg><span>Look up an account</span><svg class="icon hero-panel__go" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a href="{% url 'transactions' %}"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg><span>Record a deposit or withdrawal</span><svg class="icon hero-panel__go" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+            <a href="{% url 'register' %}"><svg class="icon" aria-hidden="true"><use href="#i-user-plus"/></svg><span>Register a customer</span><svg class="icon hero-panel__go" aria-hidden="true"><use href="#i-arrow-right"/></svg></a>
+        </nav>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__inner">
+        <div class="section-head reveal">
+            <span class="eyebrow">What you can do</span>
+            <h2>Our Banking Services</h2>
+            <p>Everything you need for convenient and secure banking.</p>
+        </div>
+
+        <div class="service-grid">
+            <a class="service-card reveal" style="--i:1" href="{% url 'register' %}">
+                <span class="service-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-user-plus"/></svg></span>
+                <h3>Customer Registration</h3>
+                <p>Register new customers and keep their details in one place.</p>
+                <span class="service-card__link">Register <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="service-card reveal" style="--i:2" href="{% url 'account' %}">
+                <span class="service-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-wallet"/></svg></span>
+                <h3>Account Management</h3>
+                <p>Open Savings, Current or Fixed Deposit accounts for registered customers.</p>
+                <span class="service-card__link">Open an account <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="service-card reveal" style="--i:3" href="{% url 'transactions' %}">
+                <span class="service-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-swap"/></svg></span>
+                <h3>Deposits &amp; Withdrawals</h3>
+                <p>Verify an account, then record a deposit or withdrawal with a balance preview.</p>
+                <span class="service-card__link">Record a transaction <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="service-card reveal" style="--i:4" href="{% url 'othertransaction' %}">
+                <span class="service-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg></span>
+                <h3>Other Bank Transactions</h3>
+                <p>Check an account and withdraw through the connected VK Bank or ABC Bank services.</p>
+                <span class="service-card__link">Other transactions <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+            <a class="service-card reveal" style="--i:5" href="{% url 'profile' %}">
+                <span class="service-card__icon"><svg class="icon" aria-hidden="true"><use href="#i-user"/></svg></span>
+                <h3>Account Profile</h3>
+                <p>Look up any account by its number and view the account details.</p>
+                <span class="service-card__link">View a profile <svg class="icon" aria-hidden="true"><use href="#i-arrow-right"/></svg></span>
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="section section--tint">
+    <div class="section__inner">
+        <div class="section-head reveal">
+            <span class="eyebrow">Why VK Banking</span>
+            <h2>Why Choose Us?</h2>
+        </div>
+        <div class="feature-grid">
+            <div class="feature reveal" style="--i:1">
+                <span class="feature__icon"><svg class="icon" aria-hidden="true"><use href="#i-shield"/></svg></span>
+                <h3>Secure</h3>
+                <p>Your banking information is protected.</p>
+            </div>
+            <div class="feature reveal" style="--i:2">
+                <span class="feature__icon"><svg class="icon" aria-hidden="true"><use href="#i-zap"/></svg></span>
+                <h3>Fast</h3>
+                <p>Perform banking operations quickly and easily.</p>
+            </div>
+            <div class="feature reveal" style="--i:3">
+                <span class="feature__icon"><svg class="icon" aria-hidden="true"><use href="#i-smile"/></svg></span>
+                <h3>Easy to Use</h3>
+                <p>A simple and user-friendly banking experience.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="section__inner about card card--pad reveal">
+        <h2>About Our Banking System</h2>
         <p>
-            Secure, simple and convenient banking at your fingertips.
+            Our Banking System provides a simple and secure platform
+            for managing banking services online. Customers can access
+            their accounts, record transactions and
+            use various banking services conveniently.
         </p>
-        <div class="hero-buttons">
-            <a href="{% url 'register' %}" class="btn primary">New Registration</a>
-            <a href="{% url 'account' %}" class="btn secondary">Create Account</a>
-        </div>
-    </div>
-</section>
-<section class="services">
-    <h2>Our Banking Services</h2>
-    <p class="section-description">
-        Everything you need for convenient and secure banking.
-    </p>
-    <div class="service-container">
-        <div class="service-card">
-            <h3>💰 Savings Account</h3>
-            <p>
-                Manage your savings and keep your money secure.
-            </p>
-        </div>
-        <div class="service-card">
-            <h3>💸 Money Transfer</h3>
-            <p>
-                Transfer money quickly and conveniently.
-            </p>
-        </div>
-        <div class="service-card">
-            <h3>🏦 Loans</h3>
-            <p>
-                Explore our available banking loan services.
-            </p>
-        </div>
-        <div class="service-card">
-            <h3>💳 Cards</h3>
-            <p>
-                Access and manage your banking card services.
-            </p>
-        </div>
-    </div>
-</section>
-<section class="features">
-    <h2>Why Choose Us?</h2>
-    <div class="feature-container">
-        <div class="feature">
-            <h3>🔒 Secure</h3>
-            <p>Your banking information is protected.</p>
-        </div>
-        <div class="feature">
-            <h3>⚡ Fast</h3>
-            <p>Perform banking operations quickly and easily.</p>
-        </div>
-        <div class="feature">
-            <h3>😊 Easy to Use</h3>
-            <p>A simple and user-friendly banking experience.</p>
-        </div>
     </div>
 </section>
 
-<section class="about">
-    <h2>About Our Banking System</h2>
-    <p>
-        Our Banking System provides a simple and secure platform
-        for managing banking services online. Customers can access
-        their accounts, transfer funds, manage transactions and
-        use various banking services conveniently.
-    </p>
-
-</section>
-<section class="cta">
-    <h2>Start Your Banking Journey Today</h2>
-    <p>
-        Create an account and enjoy simple and secure banking.
-    </p>
-    <a href="#" class="btn primary">Get Started</a>
-
+<section class="section section--flush">
+    <div class="section__inner">
+        <div class="cta reveal">
+            <div>
+                <h2>Start Your Banking Journey Today</h2>
+                <p>Create an account and enjoy simple and secure banking.</p>
+            </div>
+            <a href="{% url 'register' %}" class="btn btn--light">Get Started</a>
+        </div>
+    </div>
 </section>
 
 {% endblock %}

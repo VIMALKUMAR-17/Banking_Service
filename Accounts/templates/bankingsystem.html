@@ -1,68 +1,128 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>VK Banking System</title>
+    <meta name="theme-color" content="#0a1f44">
+    <title>{% block title %}VK Banking System{% endblock %}</title>
 
-    {% load static %}
+    <script>document.documentElement.classList.add('js');</script>
+
+    {# Inter is loaded when online; the font stack in banking1.css falls back to system fonts. #}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+
     <link rel="stylesheet" href="{% static 'banking1.css' %}">
+    {% block extra_head %}{% endblock %}
     <link rel="stylesheet" href="{% static 'responsive.css' %}">
-    <link rel="stylesheet" href="{% static 'all-responsive.css' %}">
+    <script src="{% static 'banking.js' %}" defer></script>
 </head>
 <body>
-    <div class="header">
-        <h1 id="heading">VK Banking System</h1>
-        <h2 id="heading">Welcome to our Bank</h2>
-        <nav>
-            <a href="{% url 'home' %}">Home</a>  |
-            <a href="{% url 'profile' %}">Profile</a>  |
-            <a href="{% url 'register' %}">Registration</a>  | 
-            <a href="{% url 'account' %}">Accounts</a>  |
-            <a href="{% url 'transactions' %}">Transactions</a>  |            
-            <a href="{% url 'othertransaction' %}">Other Transactions</a>
-        </nav>
-    </div>
-    {% block welcome %}{% endblock %}
-    {% block register %}{% endblock %}
-    {% block account %}{% endblock %}
-    {% block transaction %}{% endblock %}
-    {% block home %}{% endblock %}
-    {% block others %}{% endblock %}
-    {% block profile %}{% endblock %}
-    
-<div class="footer">
-    <div class="footer-container">
+    {# Inline SVG icon sprite, used as <svg class="icon"><use href="#i-name"/></svg> #}
+    <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+        <symbol id="i-bank" viewBox="0 0 24 24"><path d="M3 10l9-6 9 6"/><path d="M5 10v8M9.5 10v8M14.5 10v8M19 10v8"/><path d="M3 21h18"/></symbol>
+        <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/></symbol>
+        <symbol id="i-user-plus" viewBox="0 0 24 24"><circle cx="10" cy="8" r="4"/><path d="M2 21c0-4 3.6-7 8-7"/><path d="M19 8v6M16 11h6"/></symbol>
+        <symbol id="i-wallet" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h12v4"/><path d="M3 7v11a2 2 0 0 0 2 2h15V9H5a2 2 0 0 1-2-2z"/><circle cx="16.5" cy="14.5" r="1"/></symbol>
+        <symbol id="i-swap" viewBox="0 0 24 24"><path d="M7 4L3 8l4 4"/><path d="M3 8h14"/><path d="M17 12l4 4-4 4"/><path d="M21 16H7"/></symbol>
+        <symbol id="i-arrow-up-right" viewBox="0 0 24 24"><path d="M7 17L17 7"/><path d="M8 7h9v9"/></symbol>
+        <symbol id="i-arrow-down-left" viewBox="0 0 24 24"><path d="M17 7L7 17"/><path d="M17 17H7V7"/></symbol>
+        <symbol id="i-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></symbol>
+        <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M9 12l2 2 4-4"/></symbol>
+        <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
+        <symbol id="i-smile" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9.5v.01M15 9.5v.01"/></symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7.5V13"/><path d="M12 16.5v.01"/></symbol>
+        <symbol id="i-check-circle" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M8 12l3 3 5-6"/></symbol>
+        <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v5.5"/><path d="M12 7.5v.01"/></symbol>
+        <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    </svg>
 
-        <div class="footer-section">
-            <h2>VK Banking System</h2>
-            <p>Your trusted partner for safe and secure banking.</p>
-            <p>We provide reliable banking services to help you
-               manage your accounts and transactions easily.</p>
+    <a class="skip-link" href="#main">Skip to main content</a>
+
+    <header class="site-header">
+        <div class="site-header__inner">
+            <a class="brand" href="{% url 'home' %}">
+                <span class="brand__logo" aria-hidden="true"><svg class="icon"><use href="#i-bank"/></svg></span>
+                <span class="brand__text">
+                    <span class="brand__name">VK Banking System</span>
+                    <span class="brand__tag">Welcome to our Bank</span>
+                </span>
+            </a>
+
+            <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Toggle navigation menu">
+                <span class="nav-toggle__bars" aria-hidden="true"><span></span><span></span><span></span></span>
+            </button>
+
+            <nav id="site-nav" class="site-nav" aria-label="Main navigation">
+                {% with current=request.resolver_match.url_name %}
+                <a href="{% url 'home' %}"{% if current == 'home' or current == 'index' %} class="is-active" aria-current="page"{% endif %}>Home</a>
+                <a href="{% url 'profile' %}"{% if current == 'profile' %} class="is-active" aria-current="page"{% endif %}>Profile</a>
+                <a href="{% url 'register' %}"{% if current == 'register' %} class="is-active" aria-current="page"{% endif %}>Registration</a>
+                <a href="{% url 'account' %}"{% if current == 'account' %} class="is-active" aria-current="page"{% endif %}>Accounts</a>
+                <a href="{% url 'transactions' %}"{% if current == 'transactions' %} class="is-active" aria-current="page"{% endif %}>Transactions</a>
+                <a href="{% url 'othertransaction' %}"{% if current == 'othertransaction' %} class="is-active" aria-current="page"{% endif %}>Other Transactions</a>
+                {% endwith %}
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" class="site-main">
+        {% if messages %}
+        <div class="page page--form messages">
+            {% for message in messages %}
+            <div class="alert alert--{% if message.tags %}{{ message.tags }}{% else %}info{% endif %}" role="status">
+                <svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>
+                <span>{{ message }}</span>
+                <button type="button" class="alert__close" data-dismiss="alert" aria-label="Dismiss message"><svg class="icon" aria-hidden="true"><use href="#i-close"/></svg></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% block welcome %}{% endblock %}
+        {% block register %}{% endblock %}
+        {% block account %}{% endblock %}
+        {% block transaction %}{% endblock %}
+        {% block home %}{% endblock %}
+        {% block others %}{% endblock %}
+        {% block profile %}{% endblock %}
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="site-footer__inner">
+            <div class="site-footer__about">
+                <h2 class="site-footer__brand"><svg class="icon" aria-hidden="true"><use href="#i-bank"/></svg> VK Banking System</h2>
+                <p>Your trusted partner for safe and secure banking.</p>
+                <p>We provide reliable banking services to help you manage your accounts and transactions easily.</p>
+            </div>
+
+            <div>
+                <h3>Our Services</h3>
+                <ul>
+                    <li><a href="{% url 'register' %}">Customer Registration</a></li>
+                    <li><a href="{% url 'account' %}">Account Management</a></li>
+                    <li><a href="{% url 'transactions' %}">Deposit and Withdrawal</a></li>
+                    <li><a href="{% url 'profile' %}">Account Profile</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3>Contact Information</h3>
+                <ul>
+                    <li>Email: support@vkbanking.example</li>
+                    <li>Phone: +91 98765 43210</li>
+                    <li>Working Hours: Mon - Sat</li>
+                </ul>
+            </div>
         </div>
 
-        <div class="footer-section">
-            <h3>Our Services</h3>
-            <ul>
-                <li>Customer Registration</li>
-                <li>Account Management</li>
-                <li>Deposit and Withdrawal</li>
-                <li>Transaction History</li>
-            </ul>
+        <div class="site-footer__bottom">
+            <p>&copy; 2026 VK Banking System. All rights reserved.</p>
+            <p>Banking made simple, safe, and convenient.</p>
         </div>
-
-        <div class="footer-section">
-            <h3>Contact Information</h3>
-            <p>Email: support@vkbanking.example</p>
-            <p>Phone: +91 98765 43210</p>
-            <p>Working Hours: Mon - Sat</p>
-        </div>
-
-    </div>
-
-    <div class="footer-bottom">
-        <p>&copy; 2026 VK Banking System. All rights reserved.</p>
-        <p>Banking made simple, safe, and convenient.</p>
-    </div>
-</div>
-
+    </footer>
 </body>
 </html>

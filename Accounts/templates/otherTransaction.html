@@ -1,63 +1,79 @@
 {% extends 'bankingsystem.html' %}
 {% load static %}
-{% block others %}
-<link rel="stylesheet" href="{% static 'othertransactions.css' %}">
 
-<div class="card">
-    
-    <form action="" method="post">    
-        {% csrf_token %}
+{% block title %}Other Transactions | VK Banking System{% endblock %}
+
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'othertransactions.css' %}">
+{% endblock %}
+
+{% block others %}
+<div class="page page--form card-wrap">
+    <header class="page-head reveal">
+        <span class="eyebrow"><svg class="icon" aria-hidden="true"><use href="#i-arrow-up-right"/></svg> Other banks</span>
         <h1>Other Transactions</h1>
-        {% if message %}
-            <p style="color: green;" id="success">{{ message }}</p>
+        <p>Select a bank, check the account, then enter an amount to withdraw.</p>
+    </header>
+
+    <div class="card card--pad reveal" style="--i:1">
+        <form action="" method="post">
+            {% csrf_token %}
+
+            {% if message %}
+            <div class="alert alert--success form-alert" id="success" role="status"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span>{{ message }}</span></div>
             {% endif %}
-        {% if message_error %}
-            <p style="color: red;" id="msg_error">{{ message_error }}</p>
+            {% if message_error %}
+            <div class="alert alert--error form-alert" id="msg_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ message_error }}</span></div>
             {% endif %}
-        <table>
-            <tr>
-                <td>Bank </td>
-                <td>
-                    <select name="banks">
+
+            <div class="form-grid">
+                <div class="field field--full">
+                    <label class="field__label" for="banks">Bank</label>
+                    <select class="control" name="banks" id="banks"{% if bank_error %} aria-invalid="true" aria-describedby="banks_error"{% endif %}>
                         <option value="">Select..</option>
-                        <option value="vk_bank"{% if forms.banks == "vk_bank" %}selected{% endif %}>Vk Bank</option>
-                        <option value="abc_bank"{% if forms.banks == "abc_bank" %}selected{% endif %}>ABC Bank</option>                    
+                        <option value="vk_bank" {% if forms.banks == "vk_bank" %}selected{% endif %}>Vk Bank</option>
+                        <option value="abc_bank" {% if forms.banks == "abc_bank" %}selected{% endif %}>ABC Bank</option>
                     </select>
                     {% if bank_error %}
-                            <p style="color: red;">{{ bank_error }}</p>
-                        {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>Account Number </td>
-                <td>
-                    <input type="text" name="acc_no" value="{{ forms.acc_no|default:'' }}">
-                    <button name="action" value="check">Check</button>
-                    {% if acc_error  %}
-                        <p style="color: red;">{{ acc_error }}</p>
+                    <p class="field-error" id="banks_error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ bank_error|cut:"* " }}</span></p>
+                    {% endif %}
+                </div>
+
+                <div class="field field--full">
+                    <label class="field__label" for="acc_no">Account number</label>
+                    <div class="input-group">
+                        <input class="control" type="text" name="acc_no" id="acc_no" value="{{ forms.acc_no|default:'' }}" inputmode="numeric" autocomplete="off" placeholder="Enter account number"{% if acc_error or error %} aria-invalid="true"{% endif %}>
+                        <button class="btn btn--secondary" name="action" value="check">Check</button>
+                    </div>
+                    {% if acc_error %}
+                    <p class="field-error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ acc_error|cut:"* " }}</span></p>
                     {% endif %}
                     {% if error %}
-                        <p style="color: red;">{{ error }}</p>
+                    <p class="field-error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ error|cut:"* " }}</span></p>
                     {% endif %}
                     {% if Name %}
-                        <p style="color: green;">{{ Name }}</p>
+                    <p class="field-ok"><svg class="icon" aria-hidden="true"><use href="#i-check-circle"/></svg><span>{{ Name }}</span></p>
                     {% endif %}
-                </td>
-            </tr>
-            <tr>
-                <td>Amount </td>
-                <td>
-                    <input type="text" name="amount">
-                    <button name="action" value="withdraw">Withdraw</button>
+                </div>
+
+                <div class="field field--full">
+                    <label class="field__label" for="amount">Amount</label>
+                    <div class="input-group">
+                        <div class="input-affix">
+                            <span class="input-affix__prefix" aria-hidden="true">&#8377;</span>
+                            <input class="control" type="text" name="amount" id="amount" inputmode="decimal" autocomplete="off" placeholder="0.00"{% if with_error or bal_error %} aria-invalid="true"{% endif %}>
+                        </div>
+                        <button class="btn btn--primary" name="action" value="withdraw">Withdraw</button>
+                    </div>
                     {% if with_error %}
-                        <p style="color: red;">{{ with_error }}</p>
+                    <p class="field-error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ with_error|cut:"* " }}</span></p>
                     {% endif %}
                     {% if bal_error %}
-                        <p style="color: red;">{{ bal_error }}</p>
+                    <p class="field-error" role="alert"><svg class="icon" aria-hidden="true"><use href="#i-alert"/></svg><span>{{ bal_error|cut:"* " }}</span></p>
                     {% endif %}
-                </td>
-            </tr>
-        </table>
-    </form>
+                </div>
+            </div>
+        </form>
+    </div>
 </div>
 {% endblock %}

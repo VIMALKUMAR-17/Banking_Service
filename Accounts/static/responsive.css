@@ -1,166 +1,70 @@
+/* =====================================================================
+   Common responsive rules (loaded after page stylesheets).
+   Breakpoints: <=1023 tablet, <=900 mobile nav, <=640 phone, <=380 small phone.
+   ===================================================================== */
 
-/* Shared responsive improvements */
-* {
-    box-sizing: border-box;
+@media (min-width: 1441px) {
+    :root { --container: 1240px; }
 }
 
-body {
-    width: 100%;
-    min-width: 0;
+@media (max-width: 1023px) {
+    .site-footer__inner { grid-template-columns: 1fr 1fr; }
+    .site-footer__about { grid-column: 1 / -1; }
 }
 
-input,
-select,
-textarea,
-button {
-    max-width: 100%;
-    font: inherit;
-}
+/* Collapsible navigation (works without JS: the menu simply stays visible, stacked) */
+@media (max-width: 900px) {
+    .site-header__inner { flex-wrap: wrap; padding-block: .6rem; }
+    .site-nav { flex-basis: 100%; flex-direction: column; align-items: stretch; gap: .2rem; padding-bottom: .5rem; }
+    .site-nav a { padding: .75rem .9rem; font-size: .95rem; }
+    .site-nav a.is-active::after { display: none; }
+    .site-nav a.is-active { box-shadow: inset 3px 0 0 var(--accent); }
 
-input:not([type="radio"]):not([type="checkbox"]),
-select,
-textarea {
-    min-width: 0;
-}
-
-/* Registration forms */
-form {
-    width: calc(100% - 32px);
-    max-width: 810px;
-    margin: 24px auto;
-}
-
-form input:not([type="radio"]):not([type="checkbox"]),
-form select,
-form textarea {
-    max-width: 100%;
-}
-
-/* Transaction form */
-.transaction-container {
-    width: calc(100% - 32px);
-    max-width: 850px;
-    margin: 28px auto;
-}
-
-/* Profile page */
-.container {
-    width: calc(100% - 32px);
-    max-width: 900px;
-    margin: 28px auto;
-}
-
-/* Avoid tables overflowing the screen */
-table {
-    max-width: 100%;
-}
-
-@media (max-width: 768px) {
-    form {
-        width: calc(100% - 24px);
-        padding: 22px 16px;
+    .js .nav-toggle { display: inline-flex; }
+    .js .site-header__inner { flex-wrap: nowrap; padding-block: 0; }
+    .js .site-nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        padding: .75rem 1rem 1rem;
+        background: var(--navy-900);
+        border-top: 1px solid rgba(255, 255, 255, .1);
+        box-shadow: var(--shadow-lg);
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transform: translateY(-8px);
+        transition: opacity var(--t-base), transform var(--t-base), visibility 0s linear 250ms;
     }
-
-    form table,
-    form tbody,
-    form tr,
-    form td {
-        display: block;
-        width: 100%;
-    }
-
-    form table {
-        border-spacing: 0;
-    }
-
-    form tr {
-        margin-bottom: 14px;
-    }
-
-    form td:first-child {
-        width: 100%;
-        padding-top: 0;
-        margin-bottom: 6px;
-    }
-
-    form td:last-child {
-        width: 100%;
-    }
-
-    form input:not([type="radio"]):not([type="checkbox"]),
-    form select,
-    form textarea {
-        width: 100%;
-        min-height: 42px;
-    }
-
-    form button {
-        width: 100%;
-    }
-
-    .transaction-container {
-        width: calc(100% - 24px);
-        margin: 18px auto;
-        padding: 18px 14px;
-    }
-
-    .container {
-        width: calc(100% - 24px);
-        margin: 18px auto;
-        padding: 18px 14px;
-    }
-
-    .search-box {
-        flex-direction: column;
-    }
-
-    .search-box input,
-    .search-box button {
-        width: 100%;
-        min-width: 0;
-    }
-
-    /* Data tables can scroll horizontally */
-    table {
-        display: block;
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-
-    /* Profile details should stack vertically */
-    .row {
-        flex-wrap: wrap;
-    }
-
-    .label,
-    .value {
-        overflow-wrap: anywhere;
-    }
-
-    button {
-        min-height: 42px;
-        touch-action: manipulation;
+    .js .site-nav.is-open {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: none;
+        transition-delay: 0s;
     }
 }
 
-@media (max-width: 480px) {
-    h1 {
-        font-size: 25px;
-    }
-
-    .transaction-container h1,
-    .container h1,
-    .container h2 {
-        font-size: 22px;
-    }
-
-    form {
-        padding: 18px 12px;
-    }
-
-    .container,
-    .transaction-container {
-        padding: 16px 12px;
-    }
+@media (max-width: 640px) {
+    .brand__tag { display: none; }
+    .form-grid { grid-template-columns: minmax(0, 1fr); }
+    .site-footer__inner { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+    .btn-row .btn { flex: 1 1 100%; }
+    .choice-group .choice { flex: 1 1 auto; }
+    .choice__body { width: 100%; justify-content: flex-start; }
 }
+
+@media (max-width: 380px) {
+    .page { width: min(100% - 1.25rem, var(--page-w, var(--container))); }
+    .card--pad { padding: 1rem; }
+    .brand__name { font-size: .95rem; }
+}
+
+@media (max-width: 340px) {
+    .input-group { flex-wrap: wrap; }
+    .input-group .btn { flex: 1 1 100%; }
+}
+
+/* Wide data tables scroll inside their own wrapper instead of the page. */
+.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
