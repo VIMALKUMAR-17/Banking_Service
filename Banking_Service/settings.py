@@ -25,7 +25,7 @@ import os
 
 SECRET_KEY = os.environ.get('SECRET_KEY', 'development-only-key')
 
-DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
