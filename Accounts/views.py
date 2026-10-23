@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'POST':
+        logger.info("Registration POST received")
         cust_id = request.POST.get('cust_id')
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
@@ -63,7 +64,7 @@ def register(request):
             return render(request, 'registration.html', {'status_error': '* Status is required...','form_data': request.POST,"cust_id":cust_id,"today":today,"gender":gender,"status":status})
 
 
-        
+        logger.info("Registration validation completed; checking duplicates")
         if Customer.objects.filter(cust_id=cust_id).exists():
             return render(request,'registration.html',{'cust_error': '* Customer ID already exists...','form_data': request.POST,"cust_id":cust_id,"today":today,"gender":gender,"status":status})
         if Customer.objects.filter(aadhar=aadhar).exists():
@@ -74,6 +75,7 @@ def register(request):
             return render(request,'registration.html',{'pan_error': '* PAN number already exists...','form_data': request.POST,"cust_id":cust_id,"today":today,"gender":gender,"status":status})
         
         try:
+            logger.info("Registration duplicate checks passed; creating customer")
             Customer.objects.create(
                 cust_id=cust_id,
                 first_name=first_name,
