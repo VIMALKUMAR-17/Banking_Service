@@ -93,8 +93,13 @@ def register(request):
                 created_at=created_at,
                 status=status
             )
-        except DatabaseError:
-            logger.exception("Database error while registering a customer")
+        
+        except DatabaseError as exc:
+            logger.exception(
+                "Database error while registering a customer (%s)",
+                type(exc).__name__,
+            )
+            print("REGISTRATION_DATABASE_ERROR", flush=True)
             return render(
                 request,
                 'registration.html',
@@ -106,6 +111,7 @@ def register(request):
                 },
                 status=500
             )
+
 
         return redirect('register')
 
