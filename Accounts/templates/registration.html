@@ -17,6 +17,9 @@
 
     <form action="" method="post" class="card card--pad reveal" style="--i:1">
         {% csrf_token %}
+        {% if server_error %}
+    <p class="field-error" role="alert">{{ server_error }}</p>
+{% endif %}
         <p class="form-note">All fields are required.</p>
 
         <section class="form-section" aria-labelledby="sec-personal">

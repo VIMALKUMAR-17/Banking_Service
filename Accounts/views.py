@@ -7,6 +7,10 @@ from rest_framework.response import Response
 from .serializers import AccountSerializer,TransactionSerializer
 from django.contrib.auth.hashers import make_password,check_password
 import requests
+import logging
+from django.db import DatabaseError
+
+logger = logging.getLogger(__name__)
 
 def register(request):
     if request.method == 'POST':
@@ -68,24 +72,41 @@ def register(request):
             return render(request,'registration.html',{'email_error': '* Email already exists...','form_data': request.POST,"cust_id":cust_id,"today":today,"gender":gender,"status":status})
         if Customer.objects.filter(pan=pan).exists():
             return render(request,'registration.html',{'pan_error': '* PAN number already exists...','form_data': request.POST,"cust_id":cust_id,"today":today,"gender":gender,"status":status})
-        Customer.objects.create(
-            cust_id=cust_id,
-            first_name=first_name,
-            last_name=last_name,
-            dob=dob,
-            gender=gender,
-            phone=phone,
-            email=email,
-            address=address,
-            city=city,
-            state=state,
-            pincode=pincode,
-            aadhar=aadhar,
-            pan=pan,
-            created_at=created_at,
-            status=status
-        )
+        
+        try:
+            Customer.objects.create(
+                cust_id=cust_id,
+                first_name=first_name,
+                last_name=last_name,
+                dob=dob,
+                gender=gender,
+                phone=phone,
+                email=email,
+                address=address,
+                city=city,
+                state=state,
+                pincode=pincode,
+                aadhar=aadhar,
+                pan=pan,
+                created_at=created_at,
+                status=status
+            )
+        except DatabaseError:
+            logger.exception("Database error while registering a customer")
+            return render(
+                request,
+                'registration.html',
+                {
+                    "cust_id": cust_id,
+                    "today": today,
+                    "form_data": request.POST,
+                    "server_error": "Registration failed. Please try again."
+                },
+                status=500
+            )
+
         return redirect('register')
+
     last_customer = Customer.objects.order_by("-id").first()
     if last_customer:
         number=int(last_customer.cust_id)+1
